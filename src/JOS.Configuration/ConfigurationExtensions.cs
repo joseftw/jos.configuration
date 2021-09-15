@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 
@@ -10,28 +9,25 @@ namespace JOS.Configuration
     {
         public static T GetRequiredValue<T>(
             this IConfiguration configuration,
-            string key) where T : new()
+            string key)
         {
-            if (typeof(T) == typeof(string) || typeof(T).IsValueType)
+            var value = configuration.GetValue(typeof(T?), key);
+            if (value == null)
             {
-                if (typeof(T) == typeof(DateTime))
-                {
-                    return (T)HandleDateTime(configuration, key);
-                }
-
-                var value = configuration.GetValue(typeof(T?), key);
-                if (value == null)
-                {
-                    throw MissingRequiredKeyException(key);
-                }
-
-                return (T)value;
+                throw MissingRequiredKeyException(key);
             }
 
+            return (T)value;
+        }
+
+        public static T GetRequiredOptions<T>(
+            this IConfiguration configuration,
+            string key
+        ) where T : new()
+        {
             var configurationSection = configuration.GetRequiredSection(key);
             var data = new T();
-            configurationSection.Bind(key, data);
-
+            configurationSection.Bind(data);
             return data;
         }
 
@@ -40,25 +36,6 @@ namespace JOS.Configuration
             var configurationSection = configuration.GetRequiredSection(key);
             var target = new List<T>();
             configurationSection.Bind(target);
-            var dateTimeProperties = typeof(T).GetProperties().Where(x => x.PropertyType == typeof(DateTime)).ToArray();
-
-            if (!dateTimeProperties.Any())
-            {
-                return target;
-            }
-
-            foreach (var item in target)
-            {
-                foreach (var property in dateTimeProperties)
-                {
-                    var dateTime = (DateTime)property.GetValue(item)!;
-                    // A UTC value will have kind set to Local -> Change to UTC
-                    if (dateTime.Kind == DateTimeKind.Local)
-                    {
-                        property.SetValue(item, dateTime.ToUniversalTime());
-                    }
-                }
-            }
 
             return target;
         }
@@ -91,24 +68,7 @@ namespace JOS.Configuration
             return section.Value != null || section.GetChildren().Any();
         }
 
-        private static object HandleDateTime(IConfiguration configuration, string key)
-        {
-            var dateTimeValue = configuration.GetValue<string>(key);
-
-            if (string.IsNullOrWhiteSpace(dateTimeValue))
-            {
-                throw MissingRequiredKeyException(key);
-            }
-
-            if (dateTimeValue.EndsWith("Z", StringComparison.OrdinalIgnoreCase))
-            {
-                return DateTime.Parse(dateTimeValue, styles: DateTimeStyles.AdjustToUniversal);
-            }
-
-            return DateTime.Parse(dateTimeValue);
-        }
-
-        private static Exception MissingRequiredKeyException(string key) => 
-            throw new Exception($"Key '{key}' had no value, have you forgot to add it to Configuration?");
+        private static Exception MissingRequiredKeyException(string key) =>
+            throw new Exception($"'{key}' had no value, have you forgot to add it to the Configuration?");
     }
 }

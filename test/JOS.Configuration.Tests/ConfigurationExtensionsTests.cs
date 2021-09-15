@@ -15,6 +15,22 @@ namespace JOS.Configuration.Tests
         }
 
         [Fact]
+        public void ShouldBindExistingStringCorrectly()
+        {
+            var result = _configuration.GetRequiredValue<string>("string");
+
+            result.ShouldBe("data");
+        }
+
+        [Fact]
+        public void ShouldThrowExceptionForNonExistingString()
+        {
+            var exception = Should.Throw<Exception>(() => _configuration.GetRequiredValue<string>("nonExistingString"));
+
+            exception.Message.ShouldBe("'nonExistingString' had no value, have you forgot to add it to the Configuration?");
+        }
+
+        [Fact]
         public void ShouldBindExistingIntegerCorrectly()
         {
             var result = _configuration.GetRequiredValue<int>("int");
@@ -27,7 +43,7 @@ namespace JOS.Configuration.Tests
         {
             var exception = Should.Throw<Exception>(() => _configuration.GetRequiredValue<int>("nonExistingInt"));
 
-            exception.Message.ShouldBe("Key 'nonExistingInt' had no value, have you forgot to add it to Configuration?");
+            exception.Message.ShouldBe("'nonExistingInt' had no value, have you forgot to add it to the Configuration?");
         }
 
         [Fact]
@@ -43,33 +59,23 @@ namespace JOS.Configuration.Tests
         {
             var exception = Should.Throw<Exception>(() => _configuration.GetRequiredValue<int>("nonExistingBool"));
 
-            exception.Message.ShouldBe("Key 'nonExistingBool' had no value, have you forgot to add it to Configuration?");
+            exception.Message.ShouldBe("'nonExistingBool' had no value, have you forgot to add it to the Configuration?");
         }
 
         [Fact]
-        public void ShouldBindExistingUtcDateTimeCorrectly()
+        public void ShouldBindDateTimeOffsetCorrectly()
         {
-            var result = _configuration.GetRequiredValue<DateTime>("datetimeUtc");
+            var result = _configuration.GetRequiredValue<DateTimeOffset>("date");
 
-            result.Kind.ShouldBe(DateTimeKind.Utc);
             result.ShouldBe(new DateTime(2021, 01, 02, 08, 09, 10, DateTimeKind.Utc));
         }
 
         [Fact]
-        public void ShouldBindExistingUnspecifiedDateTimeCorrectly()
+        public void ShouldThrowExceptionForNonExistingDateTimeOffset()
         {
-            var result = _configuration.GetRequiredValue<DateTime>("datetime");
+            var exception = Should.Throw<Exception>(() => _configuration.GetRequiredValue<DateTimeOffset>("nonExistingDateTimeOffset"));
 
-            result.Kind.ShouldBe(DateTimeKind.Unspecified);
-            result.ShouldBe(new DateTime(2021, 01, 02, 08, 09, 10, DateTimeKind.Unspecified));
-        }
-
-        [Fact]
-        public void ShouldThrowExceptionForNonExistingDateTime()
-        {
-            var exception = Should.Throw<Exception>(() => _configuration.GetRequiredValue<DateTime>("nonExistingDateTime"));
-
-            exception.Message.ShouldBe("Key 'nonExistingDateTime' had no value, have you forgot to add it to Configuration?");
+            exception.Message.ShouldBe("'nonExistingDateTimeOffset' had no value, have you forgot to add it to the Configuration?");
         }
 
         [Fact]
@@ -104,11 +110,10 @@ namespace JOS.Configuration.Tests
             var result = _configuration.GetRequiredValues<ExampleOptions>("arrayComplex");
 
             var resultList = result.ToList();
+            var firstItem = resultList.First();
 
             resultList.Count.ShouldBe(3);
-            var firstItem = resultList.First();
-            firstItem.DateTime.Kind.ShouldBe(DateTimeKind.Unspecified);
-            firstItem.DateTime.ShouldBe(new DateTime(2021, 01, 02, 08, 09, 10, DateTimeKind.Unspecified));
+            firstItem.Date.ShouldBe(new DateTime(2021, 01, 02, 08, 09, 10, DateTimeKind.Utc));
         }
 
         [Fact]
@@ -117,11 +122,10 @@ namespace JOS.Configuration.Tests
             var result = _configuration.GetRequiredValues<ExampleOptions>("arrayComplex");
 
             var resultList = result.ToList();
+            var firstItem = resultList.First();
 
             resultList.Count.ShouldBe(3);
-            var firstItem = resultList.First();
-            firstItem.DateTimeUtc.Kind.ShouldBe(DateTimeKind.Utc);
-            firstItem.DateTimeUtc.ShouldBe(new DateTime(2021, 01, 02, 08, 09, 10, DateTimeKind.Utc));
+            firstItem.Date.ShouldBe(new DateTime(2021, 01, 02, 08, 09, 10, DateTimeKind.Utc));
         }
 
         [Fact]
@@ -135,9 +139,35 @@ namespace JOS.Configuration.Tests
         [Fact]
         public void ShouldThrowExceptionWhenTryingToBindToNonExistingSection()
         {
-            var exception = Should.Throw<Exception>(() => _configuration.GetRequiredValue<ExampleOptions>("nonExistingExampleOptions"));
+            var exception = Should.Throw<Exception>(() => _configuration.GetRequiredOptions<ExampleOptions>("nonExistingExampleOptions"));
 
             exception.Message.ShouldBe("Section 'nonExistingExampleOptions' not found in configuration.");
+        }
+
+        [Fact]
+        public void ShouldReturnUtcDatesByDefaultForDateTimeOffsetWhenCallingGetRequiredValue()
+        {
+            var result = _configuration.GetRequiredValue<DateTimeOffset>("date");
+
+            result.ShouldBe(new DateTime(2021, 01, 02, 08, 09, 10, DateTimeKind.Utc));
+        }
+
+        [Fact]
+        public void ShouldReturnUtcDatesByDefaultForDateTimeOffsetWhenCallingGetRequiredValues()
+        {
+            var result = _configuration.GetRequiredValues<DateTimeOffset>("dates");
+
+            var utcDates = result.Select(x => x.UtcDateTime);
+
+            utcDates.ShouldAllBe(x => x == new DateTime(2021, 01, 02, 08, 09, 10));
+        }
+
+        [Fact]
+        public void ShouldReturnUtcDatesByDefaultForDateTimeOffsetWhenCallingGetRequiredOptions()
+        {
+            var result = _configuration.GetRequiredOptions<BlogExampleOptions>("blogExample");
+
+            result.SomeDate.ShouldBe(new DateTime(2021, 01, 02, 08, 09, 10, DateTimeKind.Utc));
         }
     }
 }
