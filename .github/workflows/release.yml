@@ -25,6 +25,6 @@ jobs:
     - name: Build and Test
       run: dotnet test -c Release
     - name: Pack JOS.Configuration ${{ steps.nbgv.outputs.nugetpackageversion }}
-      run: dotnet pack src/JOS.Enumeration -c Release -o ./nuget-packages --no-build
+      run: dotnet pack src/JOS.Configuration -c Release -o ./nuget-packages --no-build
     - name: Push version ${{ steps.nbgv.outputs.nugetpackageversion }} packages
       run: dotnet nuget push ./nuget-packages/** --source nuget.org --api-key ${{secrets.NUGET_API_KEY}}
