@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D886A0A0-A1E0-4F5C-B859-668823DEB2EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5A39D366-DC70-471B-9C2E-8F245EC0448C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{1FAF031B-2342-499C-B986-3DBAD2F9EE74}"
+				ProjectSection(SolutionItems) = preProject
+								Directory.Build.props = Directory.Build.props
+								Directory.Packages.props = Directory.Packages.props
+								nuget.config = nuget.config
+								version.json = version.json
+								.editorconfig = .editorconfig
+								.gitignore = .gitignore
+					.github\workflows\release.yml = .github\workflows\release.yml
+					.github\workflows\verify.yml = .github\workflows\verify.yml
+				EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JOS.Configuration", "src\JOS.Configuration\JOS.Configuration.csproj", "{3013D84F-948D-4211-826B-9F4FA3F359A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JOS.Configuration.Tests", "test\JOS.Configuration.Tests\JOS.Configuration.Tests.csproj", "{904F0195-529D-4A9D-BC8C-B85F702DBB28}"
+EndProject
+Global
+				GlobalSection(SolutionConfigurationPlatforms) = preSolution
+								Debug|Any CPU = Debug|Any CPU
+								Release|Any CPU = Release|Any CPU
+				EndGlobalSection
+				GlobalSection(NestedProjects) = preSolution
+								{3013D84F-948D-4211-826B-9F4FA3F359A1} = {D886A0A0-A1E0-4F5C-B859-668823DEB2EC}
+					{904F0195-529D-4A9D-BC8C-B85F702DBB28} = {5A39D366-DC70-471B-9C2E-8F245EC0448C}
+				EndGlobalSection
+				GlobalSection(ProjectConfigurationPlatforms) = postSolution
+								{3013D84F-948D-4211-826B-9F4FA3F359A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+								{3013D84F-948D-4211-826B-9F4FA3F359A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+								{3013D84F-948D-4211-826B-9F4FA3F359A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+								{3013D84F-948D-4211-826B-9F4FA3F359A1}.Release|Any CPU.Build.0 = Release|Any CPU
+					{904F0195-529D-4A9D-BC8C-B85F702DBB28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{904F0195-529D-4A9D-BC8C-B85F702DBB28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{904F0195-529D-4A9D-BC8C-B85F702DBB28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{904F0195-529D-4A9D-BC8C-B85F702DBB28}.Release|Any CPU.Build.0 = Release|Any CPU
+				EndGlobalSection
+EndGlobal

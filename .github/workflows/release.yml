@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    branches: [ "main", "release/*" ]
+jobs:
+  build:
+    timeout-minutes: 5
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: dotnet/nbgv@master
+      id: nbgv
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+          6.0.x
+          7.0.x
+          8.0.x
+        dotnet-quality: 'preview'
+    - name: Build and Test
+      run: dotnet test -c Release
+    - name: Pack JOS.Configuration ${{ steps.nbgv.outputs.nugetpackageversion }}
+      run: dotnet pack src/JOS.Enumeration -c Release -o ./nuget-packages --no-build
+    - name: Push version ${{ steps.nbgv.outputs.nugetpackageversion }} packages
+      run: dotnet nuget push ./nuget-packages/** --source nuget.org --api-key ${{secrets.NUGET_API_KEY}}
