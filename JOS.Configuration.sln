@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{1FAF031B-2
 								.gitignore = .gitignore
 					.github\workflows\release.yml = .github\workflows\release.yml
 					.github\workflows\verify.yml = .github\workflows\verify.yml
+					README.md = README.md
 				EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JOS.Configuration", "src\JOS.Configuration\JOS.Configuration.csproj", "{3013D84F-948D-4211-826B-9F4FA3F359A1}"
