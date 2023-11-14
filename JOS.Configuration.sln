@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JOS.Configuration", "src\JO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JOS.Configuration.Tests", "test\JOS.Configuration.Tests\JOS.Configuration.Tests.csproj", "{904F0195-529D-4A9D-BC8C-B85F702DBB28}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleConsumer", "test\ExampleConsumer\ExampleConsumer.csproj", "{4A719B68-EAA6-4398-9764-A96F7F9242B6}"
+EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
 								Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,7 @@ Global
 				GlobalSection(NestedProjects) = preSolution
 								{3013D84F-948D-4211-826B-9F4FA3F359A1} = {D886A0A0-A1E0-4F5C-B859-668823DEB2EC}
 					{904F0195-529D-4A9D-BC8C-B85F702DBB28} = {5A39D366-DC70-471B-9C2E-8F245EC0448C}
+					{4A719B68-EAA6-4398-9764-A96F7F9242B6} = {5A39D366-DC70-471B-9C2E-8F245EC0448C}
 				EndGlobalSection
 				GlobalSection(ProjectConfigurationPlatforms) = postSolution
 								{3013D84F-948D-4211-826B-9F4FA3F359A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -39,5 +42,9 @@ Global
 					{904F0195-529D-4A9D-BC8C-B85F702DBB28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 					{904F0195-529D-4A9D-BC8C-B85F702DBB28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 					{904F0195-529D-4A9D-BC8C-B85F702DBB28}.Release|Any CPU.Build.0 = Release|Any CPU
+					{4A719B68-EAA6-4398-9764-A96F7F9242B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{4A719B68-EAA6-4398-9764-A96F7F9242B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{4A719B68-EAA6-4398-9764-A96F7F9242B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{4A719B68-EAA6-4398-9764-A96F7F9242B6}.Release|Any CPU.Build.0 = Release|Any CPU
 				EndGlobalSection
 EndGlobal
