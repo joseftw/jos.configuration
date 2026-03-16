@@ -72,6 +72,19 @@ public class ConfigurationExtensionTests
     }
 
     [Fact]
+    public void GetRequiredOptions_ShouldBindExistingNestedOptionsCorrectly()
+    {
+        var result = Configuration.GetRequiredOptions<Nested>("Data:Nested");
+
+        result.SomeInteger.ShouldBe(2);
+        result.SomeString.ShouldBe("other");
+        result.SomeList.Count.ShouldBe(3);
+        result.SomeList.ShouldContain(4);
+        result.SomeList.ShouldContain(5);
+        result.SomeList.ShouldContain(6);
+    }
+
+    [Fact]
     public void GetRequiredValues_ShouldThrowExceptionIfKeyIsMissing()
     {
         var exception = Should.Throw<Exception>(() => Configuration.GetRequiredValues<string>("NonExisting"));
